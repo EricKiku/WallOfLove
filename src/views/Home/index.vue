@@ -3,6 +3,8 @@
     <Header></Header>
     <router-view></router-view>
     <TabBar></TabBar>
+    
+   
  </div>
 </template>
 
@@ -26,6 +28,9 @@ export default {
 </script>
 
 <style scoped>
+.home{
+  background-color: #e5e7eb;
+  height: 100vh;
+}
 
- 
 </style>

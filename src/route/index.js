@@ -34,6 +34,11 @@ const router = new VueRouter({
             redirect: '/home'
         },
         {
+            // 重定向，防止home页面空屏
+            path:'/home',
+            redirect: {name:'homepage'}
+        },
+        {
             name:'login',
             path:'/login',
             component:()=>import('@/views/Login')
@@ -50,7 +55,7 @@ const router = new VueRouter({
             children:[
                 {
                     name:'homepage',
-                    path:'homepage',
+                    path:'/home/homepage',
                     component:()=>import("@/views/Home/HomePage")
                 }
             ]
