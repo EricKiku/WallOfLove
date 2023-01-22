@@ -1,7 +1,9 @@
 <template>
  <div class="home">
     <Header></Header>
-    <router-view></router-view>
+    <keep-alive include="HomePage">
+      <router-view></router-view>
+    </keep-alive>
     <TabBar></TabBar>
     
    
@@ -23,7 +25,9 @@ export default {
   components: {
     [Header.name]:Header,
     [TabBar.name]:TabBar
-  }
+  },
+  mounted() {
+  },
 }
 </script>
 

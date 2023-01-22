@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div v-show="$route.meta.showHead" class="header">
 
         <div class="logo">Wall</div>
         <div class="type">

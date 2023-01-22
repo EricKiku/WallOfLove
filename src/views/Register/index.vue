@@ -14,6 +14,11 @@
           @blur="formCheckout('account')"
           placeholder="账号"
         />
+        <input
+          type="text"
+          v-model="nick"
+          placeholder="昵称"
+        />
         <span v-show="passwordLengthErr" class="errorInfo">{{
           pwdErrInfo
         }}</span>
@@ -60,6 +65,7 @@ export default {
       account: "",
       password: "",
       password_again: "",
+      nick:''
     };
   },
   methods: {
@@ -72,19 +78,20 @@ export default {
     // 发送注册请求方法
     register() {
       // 判断表单是否完整
-      if (!this.accountError && !this.passwordError && !this.passwordLengthErr) {
+      if (!this.accountError && !this.passwordError && !this.passwordLengthErr&&(this.account.length!=0&&this.password.length!=0&&this.password_again.length!=0)) {
         // 完成才能发送请求
-        register(this.account, this.password).then(
+        register(this.account, this.password,this.nick).then(
           (res) => {
             this.$toast.success({
               message: "注册成功",
             });
-            // 跳转到登录页
+            // 跳转到昵称页
             this.$router.replace({
               name: "login",
               query: {
                 account: this.account,
                 password: this.password,
+                nick:this.nick || this.account
               },
             });
           },
@@ -102,26 +109,32 @@ export default {
     },
     // 表单校验方法
     formCheckout(el) {
-      if (el === "account" && this.account.length != 0) {
+      if (el === "account" ) {
+        if (this.account.length == 0) {
+          this.accountError = false;
+          this.accErrInfo = "";
+        }
         // 发送请求，判断数据库是否存在账号，并且最大长度是12
         findAccount(this.account).then((res) => {
           if (res === "have") {
             // 判断是否存在
             this.accountError = true;
             this.accErrInfo = "账号已使用";
+            return;
           } else if (res === "havent" && this.account.length <= 12) {
             this.accountError = false;
             this.accErrInfo = "";
-          } else {
-            // 判断长度 是否超出
-            if (this.account.length > 12) {
-              this.accountError = true;
-              this.accErrInfo = "账号长度必须小于12位";
-            } else if (this.account.length <= 12) {
-              this.accountError = false;
-              this.accErrInfo = "";
-            }
           }
+          // 判断长度 是否超出
+          console.log(this.account.length);
+          if (this.account.length < 8 || this.account.length > 12) {
+            this.accountError = true;
+            this.accErrInfo = "账号长度必须在8-12位";
+          } else if (this.account.length >=8 && this.account.length <= 12) {
+            this.accountError = false;
+            this.accErrInfo = "";
+          }
+          
         });
       } else if (el === "password_again") {
         // 判断是否与密码相同

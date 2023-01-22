@@ -6,10 +6,19 @@
     <div class="login">
       <div class="input">
         <p class="title">登录</p>
-        <input type="text" v-model="userAccount" placeholder="请输入手机号/用户名" />
-        <input type="password" v-model="userPassword" show-password placeholder="请输入密码" />
+        <input
+          type="text"
+          v-model="userAccount"
+          placeholder="请输入手机号/用户名"
+        />
+        <input
+          type="password"
+          v-model="userPassword"
+          show-password
+          placeholder="请输入密码"
+        />
         <button class="login" @click="login">登&nbsp;&nbsp;录</button>
-        <p class="forget">忘记密码?</p>
+        <p class="forget" @click="forgetPwd">忘记密码?</p>
         <p class="noAccess">
           还没有账号?<span @click="goRegister">立即注册</span>
         </p>
@@ -19,53 +28,86 @@
 </template>
 
 <script>
-
 // 登录api
-import { login } from "@/api";
+import { login, tokenCheckout } from "@/api";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "Login",
   data() {
     return {
       value: "",
-      userAccount:'',
-      userPassword:''
+      userAccount: "",
+      userPassword: "",
+      userNick: "",
     };
   },
   methods: {
+    ...mapActions({ setToken: "setToken", setUser: "setUser" }),
     // 去注册
     goRegister() {
       this.$router.push({
         name: "register",
       });
     },
+    // 忘记密码方法
+    forgetPwd() {
+      tokenCheckout(localStorage.getItem("token")).then((res) => {
+        console.log(res);
+      });
+    },
     // 登录
     login() {
-      login(this.userAccount,this.userPassword)
-      .then(res=>{
-        if (res=='token') {
-          this.$toast.success({
-            message:'登录成功'
-          });
-          this.$router.replace({
-            name:'homepage'
-          })
-        }else if(res=='AccountError'){
-          this.$toast.fail({
-            message:'账号错误'
-          });
-        }else if(res=='PasswordError'){
-          this.$toast.fail({
-            message:'密码错误'
-          });
-        }
-      })
+      // 调用login api接口
+      // 如果账号是空的或者密码是空的，则不发送
+      if (this.userAccount.length != 0 && this.userPassword != 0) {
+        login(this.userAccount, this.userPassword).then(
+          (res) => {
+            if (res.static == "successPutToken") {
+              this.$toast.success({
+                message: "登录成功",
+              });
+              // 登录成功后，把token存在本地和vuex各一份
+              //存储在localStorage和vuex中，每次vuex都要去从localStorage中获取token
+              localStorage.setItem("token", res.tokenvalue);
+              localStorage.setItem("userAccount",this.userAccount);
+              this.setToken(res.tokenvalue);
+              this.setUser({
+                userAccount: this.userAccount,
+                userNick: this.userNick,
+              });
+              this.$router.replace({
+                name: "homepage",
+              });
+            } else if (res.static == "accountError") {
+              this.$toast.fail({
+                message: "账号错误",
+              });
+            } else if (res.static == "passwordError") {
+              this.$toast.fail({
+                message: "密码错误",
+              });
+            }
+          },
+          (resson) => {
+            this.$toast.fail({
+              message: "服务器错误",
+            });
+          }
+        );
+      } else {
+        this.$toast({
+          message: "账号或密码不能为空",
+        });
+      }
     },
   },
   mounted() {
     let account = this.$route.query.account;
     let password = this.$route.query.password;
-    this.userAccount = account||'';
-    this.userPassword = password||'';
+    let userNick = this.$route.query.nick;
+    this.userAccount = account || "";
+    this.userPassword = password || "";
+    this.userNick = userNick || "";
   },
   components: {},
 };
