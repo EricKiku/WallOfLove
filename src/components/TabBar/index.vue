@@ -53,5 +53,7 @@ export default {
 .tabbar{
   height: 50px;
 }
- 
+.van-tabbar__placeholder{
+  height: 0px !important;
+}
 </style>

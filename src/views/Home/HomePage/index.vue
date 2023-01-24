@@ -1,6 +1,6 @@
 <template>
   <keep-alive>
-    <div class="homepage">
+    <div class="homepage" :class="{cleanTop:this.$route.name === 'selfpage'}">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list v-model="loading" :finished="finished" @load="onLoad">
           <!-- 骨架屏 -->
@@ -146,5 +146,9 @@ export default {
 .center {
   margin-bottom: 10px;
   margin-left: 5px;
+}
+.cleanTop{
+  top:0px;
+  margin-bottom: 0px;
 }
 </style>

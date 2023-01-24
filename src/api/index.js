@@ -64,6 +64,7 @@ export const queryPostByPostId = (postId)=>{
     })
 }
 
+// 提交帖子
 export const putPost = (userAccount,postMessage,postDate)=>{
     return request({
         url:'/putPost',
@@ -72,6 +73,45 @@ export const putPost = (userAccount,postMessage,postDate)=>{
             userAccount,
             postMessage,
             postDate
+        }
+    })
+}
+
+// 获取用户信息
+export const getUserByUserAccount = (userAccount)=>{
+    return request({
+        url:"/getUserByUserAccount",
+        method:"GET",
+        params:{
+            userAccount
+        }
+    })
+}
+
+// 评论接口
+export const putPostComment = (comment)=>{
+    console.log(comment);
+    return request({
+        url:"/putPostComment",
+        method:"GET",
+        params:{
+            userAccount:comment.userAccount,
+            commentContent:comment.MyComment,
+            postId:comment.postId,
+            date:comment.date,
+            replyPostId:comment.reply
+        }
+    })
+}
+
+// 根据帖子查询评论
+export const getComment=(postId)=>{
+    console.log(postId);
+    return request({
+        url:"/getComment",
+        meghod:"GET",
+        params:{
+            postId:postId
         }
     })
 }

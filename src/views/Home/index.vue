@@ -1,7 +1,7 @@
 <template>
  <div class="home">
     <Header></Header>
-    <keep-alive include="HomePage">
+    <keep-alive include="HomePage,SelfPage">
       <router-view></router-view>
     </keep-alive>
     <TabBar></TabBar>
