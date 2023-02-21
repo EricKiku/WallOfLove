@@ -25,7 +25,7 @@
           <p>{{ postDetails.postNick }}</p>
           <p class="little">
             {{ postDetails.postDate }}&nbsp;·&nbsp;{{
-              postDetails.postReadCount
+              postDetails.postReadcount
             }}次浏览
           </p>
         </div>
@@ -65,6 +65,7 @@ import {
   putPostComment,
   tokenCheckout,
   getComment,
+  addComment
 } from "@/api";
 import { mapState } from "vuex";
 export default {
@@ -88,7 +89,6 @@ export default {
     },
     // 评论
     putMyComment() {
-      console.log("TOKEN", this.token, "userAccount", this.userAccount);
       // 发送评论，先验证token，再把账号和评论和帖子id发送
       tokenCheckout(this.token).then(
         (res) => {
@@ -102,7 +102,9 @@ export default {
             (res) => {
               this.refreshComment()
               this.$toast.success("评论成功");
-              this.MyComment = ''
+              this.MyComment = '';
+              // 增加一个评论数
+              addComment(this.postDetails.postId);
             },
             (reason) => {
               this.$toast.fail("服务器异常");

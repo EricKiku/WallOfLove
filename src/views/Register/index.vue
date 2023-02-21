@@ -126,7 +126,6 @@ export default {
             this.accErrInfo = "";
           }
           // 判断长度 是否超出
-          console.log(this.account.length);
           if (this.account.length < 8 || this.account.length > 12) {
             this.accountError = true;
             this.accErrInfo = "账号长度必须在8-12位";

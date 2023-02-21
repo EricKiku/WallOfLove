@@ -64,6 +64,16 @@ export const queryPostByPostId = (postId)=>{
     })
 }
 
+// 根据用户id查询用户的所有帖子
+export const queryPostByUserId = async (userId)=>{
+    return await request({
+        url:'/queryPostByUserId',
+        method:'GET',
+        params:{
+            userId
+        }
+    })
+}
 // 提交帖子
 export const putPost = (userAccount,postMessage,postDate)=>{
     return request({
@@ -90,7 +100,6 @@ export const getUserByUserAccount = (userAccount)=>{
 
 // 评论接口
 export const putPostComment = (comment)=>{
-    console.log(comment);
     return request({
         url:"/putPostComment",
         method:"GET",
@@ -106,7 +115,6 @@ export const putPostComment = (comment)=>{
 
 // 根据帖子查询评论
 export const getComment=(postId)=>{
-    console.log(postId);
     return request({
         url:"/getComment",
         meghod:"GET",
@@ -115,3 +123,26 @@ export const getComment=(postId)=>{
         }
     })
 }
+
+// 添加评论数接口
+export const addComment = ((postId)=>{
+    return request({
+        url:'/addComment',
+        method:'GET',
+        params:{
+            postId
+        }
+    })
+})
+
+// 点赞接口
+export const like = ((postId,userId)=>{
+    return request({
+        url:'/like',
+        method:'GET',
+        params:{
+            postId,
+            userId
+        }
+    })
+})

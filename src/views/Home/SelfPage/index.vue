@@ -11,8 +11,8 @@
         <div class="information">
           <p class="nick"><b>{{ user.userNick }}</b></p>
           <div class="msg">
-            <span>获赞&nbsp;<b>55000</b></span>
-            <span>粉丝&nbsp;<b>900</b></span>
+            <span>获赞&nbsp;<b>0</b></span>
+            <span>粉丝&nbsp;<b>0</b></span>
           </div>
         </div>
         <div class="setting" @click="clickSetBtn">
@@ -24,7 +24,7 @@
         <span v-if="user.userSelfinfo">{{ user.userSelfinfo }}</span>
       </div>
       <div v-if="user" class="selfpost">
-        <HomePage></HomePage>
+        <HomePage :userId="user.userId"></HomePage>
       </div>
     </div>
 

@@ -51,8 +51,8 @@ export default {
     },
     putPost() {
       // 发帖，如果帖子字数少于10个不让发
-      if (this.message.length > 100) {
-        this.$toast("字数不得多于100!");
+      if (this.message.length > 400) {
+        this.$toast("字数不得多于400!");
         return;
       }
       if (this.message.length < 10) {

@@ -30,3 +30,6 @@ import { Field } from 'vant';
 Vue.use(Field);
 import { Popup } from 'vant';
 Vue.use(Popup);
+import { Empty } from 'vant';
+
+Vue.use(Empty);
